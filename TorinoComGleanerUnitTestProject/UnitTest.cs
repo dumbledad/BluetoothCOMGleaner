@@ -13,14 +13,16 @@ namespace TorinoComGleanerUnitTestProject
         {
             var resetEvent = new AutoResetEvent(false);
             var comPort = "";
-            //var hidConnector = new UwpHidConnector();
-            //await hidConnector.Initialize();
+            var hidConnector = new UwpHidConnector();
+            await hidConnector.Initialize();
             var connector = new UwpRfcommConnector();
-            connector.DeviceConnected += async (UwpRfcommDevice device) =>
+            //connector.DeviceConnected += async (UwpRfcommDevice device) =>
+            connector.DeviceConnected += (UwpRfcommDevice device) =>
             {
                 if (comPort == "")
                 {
-                    comPort = await device.ComPort();
+                    //comPort = await device.ComPort();
+                    comPort = device.ComPort(hidConnector);
                     resetEvent.Set();
                 }
             };
